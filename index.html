@@ -171,10 +171,15 @@
         .main-nav ul {
             list-style: none;
             display: flex;
+            align-items: center; /* Align items vertically */
         }
 
         .main-nav li {
             margin-left: 2rem;
+        }
+        /* Adjust margin for first item */
+        .main-nav li:first-child {
+            margin-left: 0;
         }
 
         .main-nav a {
@@ -183,8 +188,15 @@
             font-size: 0.95rem;
             padding-bottom: 5px;
             position: relative;
+            white-space: nowrap; /* Prevent wrapping */
         }
-        .main-nav a::after {
+         /* Style the CTA button differently */
+        .main-nav a.nav-cta {
+            padding: 0.5rem 1rem; /* Smaller padding */
+            font-size: 0.9rem;
+            margin-left: 2rem;
+        }
+        .main-nav a:not(.nav-cta)::after { /* Underline only for non-buttons */
             content: '';
             position: absolute;
             width: 0;
@@ -195,13 +207,13 @@
             transition: width var(--transition-speed);
         }
 
-        .main-nav a:hover::after,
-        .main-nav a.active::after {
+        .main-nav a:not(.nav-cta):hover::after,
+        .main-nav a:not(.nav-cta).active::after {
             width: 100%;
         }
 
-        .main-nav a:hover,
-        .main-nav a.active {
+        .main-nav a:not(.nav-cta):hover,
+        .main-nav a:not(.nav-cta).active {
             color: var(--text-color);
         }
 
@@ -213,6 +225,10 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
+        .menu-toggle .fa-times { display: none; } /* Hide close icon initially */
+        .menu-toggle.active .fa-bars { display: none; } /* Hide bars when active */
+        .menu-toggle.active .fa-times { display: block; } /* Show close when active */
+
 
         /* Hero Section */
         #hero {
@@ -220,8 +236,7 @@
             min-height: 700px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: left;
+            /* justify-content: center; // Keep left aligned for text */
             position: relative;
             overflow: hidden;
             padding-top: 100px; /* Account for fixed header */
@@ -243,17 +258,44 @@
             position: relative;
             z-index: 1;
             max-width: 750px;
+            text-align: left; /* Ensure text is left-aligned */
         }
 
         .hero-content h1 {
             margin-bottom: 1.5rem;
         }
-        .hero-content h1 span { /* Highlight keyword */
+        .hero-content h1 span { /* Highlight keyword - Target for typing effect */
              background: var(--accent-gradient);
              -webkit-background-clip: text;
              background-clip: text;
              color: transparent;
+             display: inline-block; /* Needed for cursor */
+             min-width: 10px; /* Prevent collapse when empty */
+             position: relative; /* For cursor pseudo-element */
         }
+        /* Typing cursor effect */
+        .hero-content h1 span::after {
+             content: '';
+             position: absolute;
+             right: -2px;
+             bottom: 10%; /* Adjust vertical position */
+             height: 70%; /* Adjust height */
+             width: 2px;
+             background-color: var(--secondary-color);
+             opacity: 1;
+             animation: blink 0.7s infinite;
+        }
+        /* Stop blinking when deleting */
+         .hero-content h1 span.deleting::after {
+             animation: none;
+             opacity: 0;
+         }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
 
         .hero-content .subtitle {
             font-size: 1.2rem;
@@ -264,6 +306,7 @@
 
         .hero-content .btn {
             margin-right: 1rem;
+            margin-bottom: 1rem; /* Ensure spacing on mobile */
         }
 
         /* Animated Chevron */
@@ -277,32 +320,24 @@
             font-size: 1.5rem;
             animation: bounce 2s infinite;
             opacity: 0.7;
+            cursor: pointer; /* Add cursor */
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-10px);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-5px);
-            }
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
         }
-
 
         /* Capabilities Section */
         #capabilities {
             background-color: var(--light-bg);
         }
-
         .capabilities-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
-
         .capability-card {
             background-color: var(--dark-bg);
             padding: 2rem 1.5rem;
@@ -313,13 +348,11 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-
         .capability-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             border-color: var(--secondary-color);
         }
-
         .capability-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -329,19 +362,22 @@
             background-clip: text;
             color: transparent;
         }
-
         .capability-card h3 {
             margin-bottom: 0.5rem;
-            color: var(--text-color); /* Brighter title */
+            color: var(--text-color);
             font-size: 1.25rem;
         }
-
         .capability-card p {
             font-size: 0.9rem;
             color: var(--text-muted);
+            margin-bottom: 0; /* Remove default bottom margin if last element */
         }
 
         /* How it Works Section */
+        #process {
+            /* Optional: add distinct background */
+             /* background-color: var(--dark-bg); */
+        }
         .process-steps {
             display: flex;
             justify-content: space-between;
@@ -349,516 +385,284 @@
             position: relative;
             margin-top: 40px;
         }
-
-         .process-steps::before { /* Connecting line */
-            content: '';
-            position: absolute;
-            top: 40px; /* Adjust based on icon size/position */
-            left: 5%;
-            right: 5%;
-            height: 2px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            opacity: 0.3;
-            z-index: 0;
+         .process-steps::before {
+            content: ''; position: absolute; top: 40px; left: 5%; right: 5%; height: 2px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); opacity: 0.3; z-index: 0;
          }
-
-
         .process-step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            padding: 1.5rem;
-            background: rgba(17, 34, 64, 0.5); /* Subtle background for steps */
-            border-radius: 8px;
+            flex: 1; text-align: center; position: relative; z-index: 1; padding: 1.5rem;
+            background: rgba(17, 34, 64, 0.5); border-radius: 8px;
         }
-
         .step-number {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--accent-gradient);
+            width: 80px; height: 80px; border-radius: 50%; background: var(--accent-gradient); color: #fff;
+            font-size: 1.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem auto; position: relative; box-shadow: 0 0 20px rgba(10, 189, 198, 0.3);
+            border: 3px solid var(--dark-bg);
+        }
+        .process-step h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .process-step p { font-size: 0.9rem; margin-bottom: 0; }
+
+        /* Stats Section */
+        #stats {
+            background: var(--accent-gradient); /* Eye-catching background */
+            padding: 60px 0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        .stat-item {
             color: #fff;
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem auto;
-            position: relative;
-            box-shadow: 0 0 20px rgba(10, 189, 198, 0.3);
-            border: 3px solid var(--dark-bg); /* Make it pop */
+            padding: 1.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1); /* Subtle glass effect */
+            border-radius: 8px;
+            transition: transform var(--transition-speed), background var(--transition-speed);
         }
-
-        .process-step h3 {
+         .stat-item:hover {
+             transform: translateY(-5px);
+             background: rgba(255, 255, 255, 0.15);
+         }
+        .stat-icon {
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+            opacity: 0.8;
         }
-
-        .process-step p {
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            font-family: var(--font-code); /* Use monospace for numbers */
+            display: inline-block; /* Prevent wrapping with suffix */
+        }
+        .counter-suffix { /* For '%' or '+' */
+            font-size: 1.8rem; /* Slightly smaller */
+            font-weight: 700;
+            font-family: var(--font-code);
+            margin-left: 2px;
+            display: inline-block;
+        }
+        .stat-label {
             font-size: 0.9rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-top: 0.5rem; /* Space above label */
+            display: block; /* Ensure it takes full width */
         }
-
 
         /* Why Choose Us Section */
         #why-choose-us {
             background-color: var(--light-bg);
         }
-
         .why-choose-us-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 3rem;
             align-items: center;
         }
-
         .benefits-list li {
-            list-style: none;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: flex-start;
+            list-style: none; margin-bottom: 1rem; display: flex; align-items: flex-start;
         }
-
         .benefits-list i {
-            color: var(--secondary-color);
-            margin-right: 1rem;
-            font-size: 1.2rem;
-            margin-top: 4px; /* Align icon better with text */
+            color: var(--secondary-color); margin-right: 1rem; font-size: 1.2rem; margin-top: 4px;
+            flex-shrink: 0; /* Prevent icon from shrinking */
         }
-
         .why-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            /* Slight animation on hover maybe? */
+            max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             transition: transform 0.5s ease-out;
+            display: block; /* Remove extra space below image */
         }
-        .why-image:hover img {
-             transform: scale(1.03) rotate(-1deg);
-        }
+        .why-image:hover img { transform: scale(1.03) rotate(-1deg); }
 
-        /* Testimonials Section - Basic Structure */
+        /* Testimonials Section */
          #testimonials {
-             /* Optional: Add a subtle pattern or different bg */
+             /* Background can be slightly different if desired */
+             /* background-color: var(--dark-bg); */
          }
-
          .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
          }
-
          .testimonial-card {
-            background: var(--light-bg);
-            padding: 2rem;
-            border-radius: 8px;
-            position: relative;
-            border-top: 4px solid var(--secondary-color);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: var(--light-bg); padding: 2rem; border-radius: 8px; position: relative;
+            border-top: 4px solid var(--secondary-color); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
          }
-
-        .testimonial-card::before { /* Quote icon */
-            content: "\f10d"; /* Font Awesome quote-left */
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            font-size: 2rem;
-            color: var(--primary-color);
-            opacity: 0.1;
+        .testimonial-card::before {
+            content: "\f10d"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute;
+            top: 1rem; left: 1rem; font-size: 2rem; color: var(--primary-color); opacity: 0.1;
         }
-
-         .testimonial-text {
-            font-style: italic;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-         }
-
-         .testimonial-author {
-            display: flex;
-            align-items: center;
-         }
-
-        /* Placeholder image */
+         .testimonial-text { font-style: italic; color: var(--text-muted); margin-bottom: 1.5rem; }
+         .testimonial-author { display: flex; align-items: center; }
          .author-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--primary-color); /* Placeholder color */
-            margin-right: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            flex-shrink: 0; /* Prevent shrinking */
-            /* In real use, replace with <img src="..."> */
+            width: 50px; height: 50px; border-radius: 50%; background-color: var(--primary-color); margin-right: 1rem;
+            display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-shrink: 0;
          }
-
-         .author-info h4 {
-            margin-bottom: 0.2rem;
-            font-size: 1rem;
-            color: var(--text-color);
-         }
-
-         .author-info p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0;
-         }
+         .author-info h4 { margin-bottom: 0.2rem; font-size: 1rem; color: var(--text-color); }
+         .author-info p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0; }
 
         /* CTA Section */
         #cta {
-            background: var(--accent-gradient);
+            background: var(--dark-bg); /* Matched footer/header better */
             text-align: center;
             padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05); /* Subtle separation */
         }
-
-        #cta h2 {
-            color: #fff;
-            margin-bottom: 1.5rem;
-        }
-
-        #cta p {
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
-        }
-
-        #cta .btn {
-             background: #fff;
-             color: var(--primary-color);
-             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        #cta h2 { color: var(--text-color); margin-bottom: 1.5rem; }
+        #cta p { color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem auto; }
+        #cta .btn { /* Use primary style */
+             background: var(--accent-gradient);
+             color: #fff;
+             box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
         }
          #cta .btn:hover {
-             background: var(--dark-bg);
-             color: #fff;
              transform: translateY(-3px);
-             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+             box-shadow: 0 6px 20px rgba(10, 189, 198, 0.4);
          }
-
 
         /* Footer */
         .main-footer {
-            background-color: var(--light-bg);
-            padding: 30px 0;
-            text-align: center;
-            margin-top: 0; /* Remove margin if CTA is directly above */
+            background-color: var(--light-bg); padding: 30px 0; text-align: center; margin-top: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .main-footer p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .footer-links a { margin: 0 0.75rem; font-size: 0.85rem; color: var(--text-muted); }
+        .footer-links a:hover { color: var(--secondary-color); }
 
-        .main-footer p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            margin: 0 0.75rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        .footer-links a:hover {
-            color: var(--secondary-color);
-        }
-
-
-        /* --- Chatbot Styles --- */
+        /* Chatbot Styles */
         .chatbot-toggler {
-            position: fixed;
-            bottom: 30px;
-            right: 35px;
-            z-index: 999;
-            height: 60px;
-            width: 60px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: var(--accent-gradient);
-            color: #fff;
-            font-size: 1.8rem;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-            transition: all var(--transition-speed);
-            animation: pulse 2s infinite;
+            position: fixed; bottom: 30px; right: 35px; z-index: 999; height: 60px; width: 60px;
+            border: none; outline: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: var(--accent-gradient); color: #fff; font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); transition: all var(--transition-speed); animation: pulse 2s infinite;
         }
-
-        .chatbot-toggler:hover {
-            transform: scale(1.1);
-            animation-play-state: paused; /* Pause pulse on hover */
-        }
-
-        .chatbot-toggler i {
-            transition: transform var(--transition-speed);
-        }
-
-        /* Optional: Change icon on open */
-        /* .chatbot-toggler.active i:first-child { transform: rotate(90deg); opacity: 0; }
-        .chatbot-toggler.active i:last-child { opacity: 1; transform: rotate(0); }
-        .chatbot-toggler i:last-child { opacity: 0; transform: rotate(-90deg); position: absolute; } */
-
+        .chatbot-toggler:hover { transform: scale(1.1); animation-play-state: paused; }
+        .chatbot-toggler i { transition: transform var(--transition-speed); }
         @keyframes pulse {
             0% { box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); }
             50% { box-shadow: 0 8px 25px rgba(10, 189, 198, 0.5); }
             100% { box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); }
         }
-
         .chatbot {
-            position: fixed;
-            right: 35px;
-            bottom: 100px; /* Position above the toggler */
-            width: 90%;
-            max-width: 380px;
-            background: var(--light-bg);
-            border-radius: 15px;
-            box-shadow: 0 0 128px 0 rgba(0,0,0,0.1), 0 32px 64px -48px rgba(0,0,0,0.5);
-            overflow: hidden;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.5) translateY(30px);
-            transform-origin: bottom right;
-            transition: opacity var(--transition-speed), transform var(--transition-speed), pointer-events var(--transition-speed);
+            position: fixed; right: 35px; bottom: 100px; width: 90%; max-width: 380px; background: var(--light-bg);
+            border-radius: 15px; box-shadow: 0 0 128px 0 rgba(0,0,0,0.1), 0 32px 64px -48px rgba(0,0,0,0.5);
+            overflow: hidden; opacity: 0; pointer-events: none; transform: scale(0.5) translateY(30px);
+            transform-origin: bottom right; transition: opacity var(--transition-speed), transform var(--transition-speed), pointer-events var(--transition-speed);
             z-index: 998;
         }
-
-        .chatbot.visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1) translateY(0);
-        }
-
+        .chatbot.visible { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
         .chatbot-header {
-            padding: 1rem 1.25rem;
-            position: relative;
-            text-align: center;
-            background: var(--dark-bg);
+            padding: 1rem 1.25rem; position: relative; text-align: center; background: var(--dark-bg);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-
-        .chatbot-header h3 {
-            font-size: 1.1rem;
-            color: var(--text-color);
-            margin: 0;
-        }
-
+        .chatbot-header h3 { font-size: 1.1rem; color: var(--text-color); margin: 0; }
         .chatbot-close-btn {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: color var(--transition-speed);
+            position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none;
+            color: var(--text-muted); cursor: pointer; font-size: 1.2rem; transition: color var(--transition-speed);
         }
-        .chatbot-close-btn:hover {
-             color: var(--text-color);
-        }
-
+        .chatbot-close-btn:hover { color: var(--text-color); }
         .chatbot-box {
-            overflow-y: auto;
-            height: 310px;
-            padding: 1.5rem 1.25rem 1rem;
-            display: flex;
-            flex-direction: column;
+            overflow-y: auto; height: 310px; padding: 1.5rem 1.25rem 1rem; display: flex; flex-direction: column;
         }
-
-        .chat-message {
-            display: flex;
-            margin-bottom: 0.8rem;
-            max-width: 95%;
-        }
-
+        .chat-message { display: flex; margin-bottom: 0.8rem; max-width: 95%; }
         .chat-message p {
-            color: var(--text-color);
-            font-size: 0.95rem;
-            background: var(--dark-bg);
-            border-radius: 10px 10px 10px 0;
-            padding: 0.8rem 1rem;
-            margin: 0 0 0 0.5rem; /* Add space between icon and text */
-            line-height: 1.4;
+            color: var(--text-color); font-size: 0.95rem; background: var(--dark-bg);
+            border-radius: 10px 10px 10px 0; padding: 0.8rem 1rem; margin: 0 0 0 0.5rem; line-height: 1.4;
+            word-wrap: break-word; /* Allow long words to wrap */
         }
-        .chat-message span { /* Icon */
-            font-size: 1.5rem;
-            color: var(--secondary-color);
-            align-self: flex-end; /* Align icon to bottom of message */
-            margin-bottom: 0.3rem;
-        }
-
-
-        .chatbot-input {
-            display: flex;
-            gap: 5px;
-            padding: 1rem 1.25rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: var(--dark-bg); /* Match header */
-        }
-        /* Style for potential form elements if added later */
-        /* .chatbot-input input, .chatbot-input textarea { ... } */
-
-         .chatbot-input .btn {
-             flex-grow: 1; /* Make button take available space */
-             padding: 0.6rem 1rem;
-             font-size: 0.9rem;
+         .chat-message p a { /* Style links within chat */
+             color: var(--primary-color);
+             font-weight: 600;
+             text-decoration: underline;
          }
-        /* --- End Chatbot Styles --- */
-
+          .chat-message p a:hover {
+              color: var(--secondary-color);
+          }
+        .chat-message span { /* Icon */
+            font-size: 1.5rem; color: var(--secondary-color); align-self: flex-end; margin-bottom: 0.3rem;
+            flex-shrink: 0; /* Prevent icon shrinking */
+        }
+        .chatbot-input {
+            display: flex; gap: 5px; padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.1); background: var(--dark-bg);
+        }
+         .chatbot-input .btn { flex-grow: 1; padding: 0.6rem 1rem; font-size: 0.9rem; }
+         .chatbot-input .btn:disabled {
+            opacity: 0.7;
+            cursor: default;
+         }
 
         /* Scroll Reveal Animations */
         .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
         /* Stagger children animation */
         .reveal.visible .capability-card,
         .reveal.visible .process-step,
+        .reveal.visible .stat-item, /* Add stagger to stats */
         .reveal.visible .testimonial-card {
              transition-delay: calc(0.1s * var(--order));
+        }
+
+        /* Helper class to prevent background scroll */
+        body.no-scroll {
+             overflow: hidden;
         }
 
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .container {
-                width: 95%;
-            }
-             .process-steps {
-                 flex-direction: column;
-                 align-items: center;
+            .container { width: 95%; }
+             .process-steps { flex-direction: column; align-items: center; }
+             .process-steps::before {
+                 top: 5%; bottom: 5%; left: 50%; right: auto; width: 2px; height: auto;
+                 transform: translateX(-1px); background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
              }
-             .process-steps::before { /* Adjust line for vertical */
-                 top: 5%;
-                 bottom: 5%;
-                 left: 50%;
-                 right: auto;
-                 width: 2px;
-                 height: auto;
-                 transform: translateX(-1px);
-                 background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
-             }
-             .process-step {
-                 width: 80%;
-                 max-width: 400px;
-             }
-             .why-choose-us-content {
-                 grid-template-columns: 1fr;
-                 text-align: center;
-             }
-             .benefits-list {
-                 text-align: left;
-                 max-width: 500px;
-                 margin: 0 auto;
-             }
-             .why-image {
-                 order: -1; /* Move image above text on mobile */
-                 margin-bottom: 2rem;
-             }
-             .why-image img {
-                 max-width: 80%;
-                 margin: 0 auto;
-                 display: block;
-             }
+             .process-step { width: 80%; max-width: 400px; }
+             .why-choose-us-content { grid-template-columns: 1fr; text-align: center; }
+             .benefits-list { text-align: left; max-width: 500px; margin: 0 auto; }
+             .why-image { order: -1; margin-bottom: 2rem; }
+             .why-image img { max-width: 80%; margin: 0 auto; display: block; }
+             .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; } /* Adjust stats grid */
+             .counter-number { font-size: 2rem; }
+             .counter-suffix { font-size: 1.5rem; }
+             .stat-icon { font-size: 2rem; }
         }
 
         @media (max-width: 768px) {
-            html { font-size: 15px; } /* Adjust base font size */
-
+            html { font-size: 15px; }
+             /* Mobile Navigation */
             .main-nav {
-                position: fixed;
-                top: 0;
-                right: -100%; /* Start hidden */
-                width: 70%;
-                height: 100vh;
-                background-color: var(--light-bg);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: right 0.5s ease-in-out;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-                padding-top: 60px; /* Space for close button */
+                position: fixed; top: 0; right: -100%; width: 70%; max-width: 300px; /* Max width */
+                height: 100vh; background-color: var(--light-bg); display: flex;
+                flex-direction: column; justify-content: flex-start; /* Align top */
+                align-items: center; transition: right 0.4s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2); padding-top: 80px; /* Space for header */
+                z-index: 999; /* Below header toggle */
             }
-            .main-nav.active {
-                 right: 0;
-            }
+            .main-nav.active { right: 0; }
+            .main-nav ul { flex-direction: column; align-items: center; width: 100%; padding-top: 2rem; }
+            .main-nav li { margin: 1rem 0; margin-left: 0; width: 80%; text-align: center;}
+            .main-nav a { font-size: 1.1rem; display: block; padding: 0.5rem 0;}
+             .main-nav a.nav-cta { margin-left: 0; margin-top: 1.5rem; display: inline-block; width: auto;} /* Reset CTA margin */
 
-            .main-nav ul {
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-            }
+            .menu-toggle { display: block; z-index: 1001; position: relative; /* Needed for z-index */ }
 
-            .main-nav li {
-                margin: 1.5rem 0;
-            }
-             .main-nav a {
-                 font-size: 1.1rem;
-             }
-
-            .menu-toggle {
-                display: block;
-                z-index: 1001; /* Above nav */
-                 position: relative; /* Needed for z-index */
-            }
-            .menu-toggle.active .fa-bars { display: none; }
-            .menu-toggle:not(.active) .fa-times { display: none; }
-
-
-            #hero {
-                text-align: center;
-                padding-top: 80px; /* Adjust for header */
-                 min-height: 600px;
-            }
-
-            .hero-content .subtitle {
-                 margin-left: auto;
-                 margin-right: auto;
-            }
-            .hero-content .btn {
-                 margin-bottom: 0.5rem; /* Stack buttons */
-                 display: block;
-                 margin-left: auto;
-                 margin-right: auto;
-                 max-width: 250px;
-            }
-
-            .section-title {
-                margin-bottom: 40px;
-            }
-            section {
-                padding: 60px 0;
-            }
-            .capabilities-grid {
-                grid-template-columns: 1fr; /* Stack cards */
-            }
-
-             /* Adjust chatbot for smaller screens */
-             .chatbot-toggler {
-                 height: 50px;
-                 width: 50px;
-                 font-size: 1.5rem;
-                 right: 20px;
-                 bottom: 20px;
-             }
-             .chatbot {
-                 right: 20px;
-                 bottom: 80px; /* Adjust based on new toggler position */
-                 max-width: calc(100% - 40px); /* Add some padding */
-             }
-             .chatbot-box {
-                 height: 250px; /* Slightly smaller height */
-             }
+            #hero { text-align: center; padding-top: 80px; min-height: 600px; justify-content: center; }
+             .hero-content { text-align: center; } /* Center hero text on mobile */
+            .hero-content .subtitle { margin-left: auto; margin-right: auto; }
+            .hero-content .btn { display: block; margin-left: auto; margin-right: auto; max-width: 250px; margin-right: auto; /* Center button */ }
+            section { padding: 60px 0; }
+            .section-title { margin-bottom: 40px; }
+            .capabilities-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); } /* 2 columns for stats on mobile */
+            .chatbot-toggler { height: 50px; width: 50px; font-size: 1.5rem; right: 20px; bottom: 20px; }
+            .chatbot { right: 20px; bottom: 80px; max-width: calc(100% - 40px); }
+            .chatbot-box { height: calc(100vh - 200px); max-height: 350px;} /* Adjust chat height */
+        }
+        @media (max-width: 480px) {
+             .stats-grid { grid-template-columns: 1fr; } /* Stack stats fully on very small screens */
+             .hero-content h1 { font-size: 2.2rem; } /* Adjust hero font size */
+             .hero-content .subtitle { font-size: 1.1rem; }
         }
 
     </style>
@@ -874,12 +678,13 @@
                     <li><a href="#hero" class="nav-link active">Home</a></li>
                     <li><a href="#capabilities" class="nav-link">Capabilities</a></li>
                     <li><a href="#process" class="nav-link">Process</a></li>
+                     <li><a href="#stats" class="nav-link">Results</a></li>
                     <li><a href="#why-choose-us" class="nav-link">Why Us</a></li>
                     <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
                     <li><a href="#cta" class="btn btn-outline nav-cta">Get Started</a></li>
                 </ul>
             </nav>
-            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
                  <i class="fas fa-bars"></i>
                  <i class="fas fa-times"></i>
              </button>
@@ -891,7 +696,8 @@
         <section id="hero">
             <div class="container">
                 <div class="hero-content reveal">
-                    <h1>Empowering <span>Secure & Agile</span> Development Cycles</h1>
+                    <!-- Span is target for typing effect -->
+                    <h1>Empowering <span id="typing-effect">Secure</span> Development Cycles</h1>
                     <p class="subtitle">World-class DevSecOps solutions designed to seamlessly integrate security, automate workflows, and accelerate your software delivery pipeline without compromising safety.</p>
                     <a href="#cta" class="btn btn-primary">Request Consultation</a>
                     <a href="#capabilities" class="btn btn-outline">Explore Capabilities</a>
@@ -964,25 +770,66 @@
             <div class="container">
                 <h2 class="section-title">Our Engagement Process</h2>
                 <div class="process-steps">
+                    <!-- Step 1 -->
                     <div class="process-step" style="--order: 1;">
                         <div class="step-number">1</div>
                         <h3>Discovery & Assessment</h3>
                         <p>We analyze your current state, processes, tools, and security posture to identify gaps and opportunities.</p>
                     </div>
+                     <!-- Step 2 -->
                     <div class="process-step" style="--order: 2;">
                         <div class="step-number">2</div>
                         <h3>Strategy & Roadmap</h3>
                         <p>Collaboratively define a tailored DevSecOps strategy, toolchain, and phased implementation roadmap.</p>
                     </div>
+                     <!-- Step 3 -->
                     <div class="process-step" style="--order: 3;">
                         <div class="step-number">3</div>
                         <h3>Implementation & Integration</h3>
                         <p>We implement security tools, automate processes within your pipelines, and ensure seamless integration.</p>
                     </div>
+                     <!-- Step 4 -->
                     <div class="process-step" style="--order: 4;">
                         <div class="step-number">4</div>
                         <h3>Optimization & Support</h3>
                         <p>Continuously monitor, optimize, and provide ongoing support to ensure long-term success and maturity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <!-- Stats Section -->
+        <section id="stats" class="reveal">
+            <div class="container">
+                <!-- Optional Title: <h2 class="section-title" style="color: #fff;">Proven Results</h2> -->
+                <div class="stats-grid">
+                    <div class="stat-item" style="--order: 1;">
+                        <div class="stat-icon"><i class="fas fa-rocket"></i></div>
+                        <div>
+                            <span class="counter-number" data-target="500">0</span><span class="counter-suffix">%</span>
+                        </div>
+                        <span class="stat-label">Faster Deployment Cycles</span>
+                    </div>
+                    <div class="stat-item" style="--order: 2;">
+                        <div class="stat-icon"><i class="fas fa-shield-virus"></i></div>
+                         <div>
+                            <span class="counter-number" data-target="95">0</span><span class="counter-suffix">%</span>
+                        </div>
+                        <span class="stat-label">Vulnerability Reduction</span>
+                    </div>
+                    <div class="stat-item" style="--order: 3;">
+                        <div class="stat-icon"><i class="fas fa-clipboard-check"></i></div>
+                         <div>
+                            <span class="counter-number" data-target="80">0</span><span class="counter-suffix">%</span>
+                        </div>
+                        <span class="stat-label">Compliance Effort Saved</span>
+                    </div>
+                     <div class="stat-item" style="--order: 4;">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                         <div>
+                            <span class="counter-number" data-target="100">0</span><span class="counter-suffix">+</span>
+                        </div>
+                        <span class="stat-label">Satisfied Clients</span>
                     </div>
                 </div>
             </div>
@@ -1006,7 +853,6 @@
                          <a href="#cta" class="btn btn-primary" style="margin-top: 1rem;">Discuss Your Project</a>
                     </div>
                     <div class="why-image">
-                         <!-- Placeholder image, replace with a relevant graphic or photo -->
                          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Team collaborating on DevSecOps workflow">
                      </div>
                 </div>
@@ -1071,15 +917,12 @@
              <div class="footer-links">
                  <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
              </div>
-            <!-- Add social media links if desired -->
         </div>
     </footer>
 
     <!-- Chatbot -->
     <button class="chatbot-toggler" id="chatbot-toggler" aria-label="Toggle Chat">
         <i class="fas fa-comment-dots"></i>
-        <!-- Optional: Icon for when chat is open -->
-        <!-- <i class="fas fa-times"></i> -->
     </button>
     <div class="chatbot" id="chatbot">
         <div class="chatbot-header">
@@ -1087,22 +930,13 @@
             <button class="chatbot-close-btn" id="chatbot-close-btn" aria-label="Close Chat"><i class="fas fa-times"></i></button>
         </div>
         <div class="chatbot-box" id="chatbot-box">
-             <!-- Initial message -->
              <div class="chat-message">
                  <span><i class="fas fa-robot"></i></span>
                  <p>Hello, how can DSONext help you today?</p>
             </div>
-            <!-- Future messages will be appended here -->
         </div>
         <div class="chatbot-input">
-             <!-- Option 1: Simple Button to trigger form/contact -->
              <button class="btn btn-primary" id="chat-request-btn">Request Support / Ask Question</button>
-            <!-- Option 2: Add simple form fields here if needed
-             <input type="text" placeholder="Your Name..." required>
-             <input type="email" placeholder="Your Email..." required>
-             <textarea placeholder="Your message..." required></textarea>
-             <button type="submit" class="btn btn-primary">Send</button>
-             -->
         </div>
     </div>
     <!-- End Chatbot -->
