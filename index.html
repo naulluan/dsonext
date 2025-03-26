@@ -493,6 +493,7 @@
             justify-content: center;
             color: white;
             font-weight: bold;
+            flex-shrink: 0; /* Prevent shrinking */
             /* In real use, replace with <img src="..."> */
          }
 
@@ -561,6 +562,153 @@
         .footer-links a:hover {
             color: var(--secondary-color);
         }
+
+
+        /* --- Chatbot Styles --- */
+        .chatbot-toggler {
+            position: fixed;
+            bottom: 30px;
+            right: 35px;
+            z-index: 999;
+            height: 60px;
+            width: 60px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            color: #fff;
+            font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            transition: all var(--transition-speed);
+            animation: pulse 2s infinite;
+        }
+
+        .chatbot-toggler:hover {
+            transform: scale(1.1);
+            animation-play-state: paused; /* Pause pulse on hover */
+        }
+
+        .chatbot-toggler i {
+            transition: transform var(--transition-speed);
+        }
+
+        /* Optional: Change icon on open */
+        /* .chatbot-toggler.active i:first-child { transform: rotate(90deg); opacity: 0; }
+        .chatbot-toggler.active i:last-child { opacity: 1; transform: rotate(0); }
+        .chatbot-toggler i:last-child { opacity: 0; transform: rotate(-90deg); position: absolute; } */
+
+        @keyframes pulse {
+            0% { box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); }
+            50% { box-shadow: 0 8px 25px rgba(10, 189, 198, 0.5); }
+            100% { box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); }
+        }
+
+        .chatbot {
+            position: fixed;
+            right: 35px;
+            bottom: 100px; /* Position above the toggler */
+            width: 90%;
+            max-width: 380px;
+            background: var(--light-bg);
+            border-radius: 15px;
+            box-shadow: 0 0 128px 0 rgba(0,0,0,0.1), 0 32px 64px -48px rgba(0,0,0,0.5);
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.5) translateY(30px);
+            transform-origin: bottom right;
+            transition: opacity var(--transition-speed), transform var(--transition-speed), pointer-events var(--transition-speed);
+            z-index: 998;
+        }
+
+        .chatbot.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+
+        .chatbot-header {
+            padding: 1rem 1.25rem;
+            position: relative;
+            text-align: center;
+            background: var(--dark-bg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .chatbot-header h3 {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .chatbot-close-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color var(--transition-speed);
+        }
+        .chatbot-close-btn:hover {
+             color: var(--text-color);
+        }
+
+        .chatbot-box {
+            overflow-y: auto;
+            height: 310px;
+            padding: 1.5rem 1.25rem 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-message {
+            display: flex;
+            margin-bottom: 0.8rem;
+            max-width: 95%;
+        }
+
+        .chat-message p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            background: var(--dark-bg);
+            border-radius: 10px 10px 10px 0;
+            padding: 0.8rem 1rem;
+            margin: 0 0 0 0.5rem; /* Add space between icon and text */
+            line-height: 1.4;
+        }
+        .chat-message span { /* Icon */
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            align-self: flex-end; /* Align icon to bottom of message */
+            margin-bottom: 0.3rem;
+        }
+
+
+        .chatbot-input {
+            display: flex;
+            gap: 5px;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: var(--dark-bg); /* Match header */
+        }
+        /* Style for potential form elements if added later */
+        /* .chatbot-input input, .chatbot-input textarea { ... } */
+
+         .chatbot-input .btn {
+             flex-grow: 1; /* Make button take available space */
+             padding: 0.6rem 1rem;
+             font-size: 0.9rem;
+         }
+        /* --- End Chatbot Styles --- */
+
 
         /* Scroll Reveal Animations */
         .reveal {
@@ -694,6 +842,23 @@
             .capabilities-grid {
                 grid-template-columns: 1fr; /* Stack cards */
             }
+
+             /* Adjust chatbot for smaller screens */
+             .chatbot-toggler {
+                 height: 50px;
+                 width: 50px;
+                 font-size: 1.5rem;
+                 right: 20px;
+                 bottom: 20px;
+             }
+             .chatbot {
+                 right: 20px;
+                 bottom: 80px; /* Adjust based on new toggler position */
+                 max-width: calc(100% - 40px); /* Add some padding */
+             }
+             .chatbot-box {
+                 height: 250px; /* Slightly smaller height */
+             }
         }
 
     </style>
@@ -711,7 +876,7 @@
                     <li><a href="#process" class="nav-link">Process</a></li>
                     <li><a href="#why-choose-us" class="nav-link">Why Us</a></li>
                     <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
-                    <li><a href="#cta" class="btn btn-outline">Get Started</a></li>
+                    <li><a href="#cta" class="btn btn-outline nav-cta">Get Started</a></li>
                 </ul>
             </nav>
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
@@ -909,6 +1074,38 @@
             <!-- Add social media links if desired -->
         </div>
     </footer>
+
+    <!-- Chatbot -->
+    <button class="chatbot-toggler" id="chatbot-toggler" aria-label="Toggle Chat">
+        <i class="fas fa-comment-dots"></i>
+        <!-- Optional: Icon for when chat is open -->
+        <!-- <i class="fas fa-times"></i> -->
+    </button>
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-header">
+            <h3>DSONext Support</h3>
+            <button class="chatbot-close-btn" id="chatbot-close-btn" aria-label="Close Chat"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chatbot-box" id="chatbot-box">
+             <!-- Initial message -->
+             <div class="chat-message">
+                 <span><i class="fas fa-robot"></i></span>
+                 <p>Hello, how can DSONext help you today?</p>
+            </div>
+            <!-- Future messages will be appended here -->
+        </div>
+        <div class="chatbot-input">
+             <!-- Option 1: Simple Button to trigger form/contact -->
+             <button class="btn btn-primary" id="chat-request-btn">Request Support / Ask Question</button>
+            <!-- Option 2: Add simple form fields here if needed
+             <input type="text" placeholder="Your Name..." required>
+             <input type="email" placeholder="Your Email..." required>
+             <textarea placeholder="Your message..." required></textarea>
+             <button type="submit" class="btn btn-primary">Send</button>
+             -->
+        </div>
+    </div>
+    <!-- End Chatbot -->
 
     <script src="all.js"></script>
 </body>
