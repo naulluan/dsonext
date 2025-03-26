@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSONext - World Class DevSecOps Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #007bff; /* Vibrant Blue */
+            --secondary-color: #0abdc6; /* Teal Accent */
+            --dark-bg: #0a192f; /* Deep Navy */
+            --light-bg: #112240; /* Lighter Navy */
+            --text-color: #ccd6f6; /* Light Grey/Blue Text */
+            --text-muted: #8892b0; /* Muted Grey Text */
+            --accent-gradient: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            --font-primary: 'Poppins', sans-serif;
+            --font-code: 'Roboto Mono', monospace;
+            --transition-speed: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px; /* Base font size */
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            color: var(--text-color); /* Brighter for headings */
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); }
+        h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.3rem, 3vw, 1.75rem); }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all var(--transition-speed);
+            cursor: pointer;
+            text-align: center;
+            font-size: 1rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(10, 189, 198, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+        }
+
+        .btn-outline:hover {
+            background: rgba(10, 189, 198, 0.1);
+            color: var(--secondary-color);
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gradient);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Header */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            background-color: rgba(10, 25, 47, 0.85); /* Slightly transparent dark bg */
+            backdrop-filter: blur(10px);
+            transition: padding var(--transition-speed), background-color var(--transition-speed), box-shadow var(--transition-speed);
+            box-shadow: none;
+        }
+
+        .main-header.scrolled {
+            padding: 0.75rem 0;
+            background-color: var(--dark-bg); /* Solid on scroll */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .logo span {
+             background: var(--accent-gradient);
+             -webkit-background-clip: text;
+             background-clip: text;
+             color: transparent;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .main-nav li {
+            margin-left: 2rem;
+        }
+
+        .main-nav a {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.95rem;
+            padding-bottom: 5px;
+            position: relative;
+        }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--accent-gradient);
+            transition: width var(--transition-speed);
+        }
+
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: var(--text-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px; /* Account for fixed header */
+        }
+
+        #hero::before { /* Subtle background gradient */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top left, rgba(0, 123, 255, 0.08), transparent 40%),
+                        radial-gradient(circle at bottom right, rgba(10, 189, 198, 0.08), transparent 40%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 750px;
+        }
+
+        .hero-content h1 {
+            margin-bottom: 1.5rem;
+        }
+        .hero-content h1 span { /* Highlight keyword */
+             background: var(--accent-gradient);
+             -webkit-background-clip: text;
+             background-clip: text;
+             color: transparent;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .hero-content .btn {
+            margin-right: 1rem;
+        }
+
+        /* Animated Chevron */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+
+        /* Capabilities Section */
+        #capabilities {
+            background-color: var(--light-bg);
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .capability-card {
+            background-color: var(--dark-bg);
+            padding: 2rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .capability-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--secondary-color);
+        }
+
+        .capability-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .capability-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color); /* Brighter title */
+            font-size: 1.25rem;
+        }
+
+        .capability-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* How it Works Section */
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            margin-top: 40px;
+        }
+
+         .process-steps::before { /* Connecting line */
+            content: '';
+            position: absolute;
+            top: 40px; /* Adjust based on icon size/position */
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            opacity: 0.3;
+            z-index: 0;
+         }
+
+
+        .process-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem;
+            background: rgba(17, 34, 64, 0.5); /* Subtle background for steps */
+            border-radius: 8px;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+            box-shadow: 0 0 20px rgba(10, 189, 198, 0.3);
+            border: 3px solid var(--dark-bg); /* Make it pop */
+        }
+
+        .process-step h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .process-step p {
+            font-size: 0.9rem;
+        }
+
+
+        /* Why Choose Us Section */
+        #why-choose-us {
+            background-color: var(--light-bg);
+        }
+
+        .why-choose-us-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .benefits-list li {
+            list-style: none;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .benefits-list i {
+            color: var(--secondary-color);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            margin-top: 4px; /* Align icon better with text */
+        }
+
+        .why-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            /* Slight animation on hover maybe? */
+            transition: transform 0.5s ease-out;
+        }
+        .why-image:hover img {
+             transform: scale(1.03) rotate(-1deg);
+        }
+
+        /* Testimonials Section - Basic Structure */
+         #testimonials {
+             /* Optional: Add a subtle pattern or different bg */
+         }
+
+         .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+         }
+
+         .testimonial-card {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+            border-top: 4px solid var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+         }
+
+        .testimonial-card::before { /* Quote icon */
+            content: "\f10d"; /* Font Awesome quote-left */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+            opacity: 0.1;
+        }
+
+         .testimonial-text {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+         }
+
+         .testimonial-author {
+            display: flex;
+            align-items: center;
+         }
+
+        /* Placeholder image */
+         .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color); /* Placeholder color */
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            /* In real use, replace with <img src="..."> */
+         }
+
+         .author-info h4 {
+            margin-bottom: 0.2rem;
+            font-size: 1rem;
+            color: var(--text-color);
+         }
+
+         .author-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+         }
+
+        /* CTA Section */
+        #cta {
+            background: var(--accent-gradient);
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        #cta h2 {
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        #cta p {
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+
+        #cta .btn {
+             background: #fff;
+             color: var(--primary-color);
+             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+         #cta .btn:hover {
+             background: var(--dark-bg);
+             color: #fff;
+             transform: translateY(-3px);
+             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+         }
+
+
+        /* Footer */
+        .main-footer {
+            background-color: var(--light-bg);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 0; /* Remove margin if CTA is directly above */
+        }
+
+        .main-footer p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            margin: 0 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Stagger children animation */
+        .reveal.visible .capability-card,
+        .reveal.visible .process-step,
+        .reveal.visible .testimonial-card {
+             transition-delay: calc(0.1s * var(--order));
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                width: 95%;
+            }
+             .process-steps {
+                 flex-direction: column;
+                 align-items: center;
+             }
+             .process-steps::before { /* Adjust line for vertical */
+                 top: 5%;
+                 bottom: 5%;
+                 left: 50%;
+                 right: auto;
+                 width: 2px;
+                 height: auto;
+                 transform: translateX(-1px);
+                 background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+             }
+             .process-step {
+                 width: 80%;
+                 max-width: 400px;
+             }
+             .why-choose-us-content {
+                 grid-template-columns: 1fr;
+                 text-align: center;
+             }
+             .benefits-list {
+                 text-align: left;
+                 max-width: 500px;
+                 margin: 0 auto;
+             }
+             .why-image {
+                 order: -1; /* Move image above text on mobile */
+                 margin-bottom: 2rem;
+             }
+             .why-image img {
+                 max-width: 80%;
+                 margin: 0 auto;
+                 display: block;
+             }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 15px; } /* Adjust base font size */
+
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Start hidden */
+                width: 70%;
+                height: 100vh;
+                background-color: var(--light-bg);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.5s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+                padding-top: 60px; /* Space for close button */
+            }
+            .main-nav.active {
+                 right: 0;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .main-nav li {
+                margin: 1.5rem 0;
+            }
+             .main-nav a {
+                 font-size: 1.1rem;
+             }
+
+            .menu-toggle {
+                display: block;
+                z-index: 1001; /* Above nav */
+                 position: relative; /* Needed for z-index */
+            }
+            .menu-toggle.active .fa-bars { display: none; }
+            .menu-toggle:not(.active) .fa-times { display: none; }
+
+
+            #hero {
+                text-align: center;
+                padding-top: 80px; /* Adjust for header */
+                 min-height: 600px;
+            }
+
+            .hero-content .subtitle {
+                 margin-left: auto;
+                 margin-right: auto;
+            }
+            .hero-content .btn {
+                 margin-bottom: 0.5rem; /* Stack buttons */
+                 display: block;
+                 margin-left: auto;
+                 margin-right: auto;
+                 max-width: 250px;
+            }
+
+            .section-title {
+                margin-bottom: 40px;
+            }
+            section {
+                padding: 60px 0;
+            }
+            .capabilities-grid {
+                grid-template-columns: 1fr; /* Stack cards */
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header class="main-header" id="main-header">
+        <div class="container">
+            <a href="#hero" class="logo">DSO<span>Next</span></a>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="#hero" class="nav-link active">Home</a></li>
+                    <li><a href="#capabilities" class="nav-link">Capabilities</a></li>
+                    <li><a href="#process" class="nav-link">Process</a></li>
+                    <li><a href="#why-choose-us" class="nav-link">Why Us</a></li>
+                    <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                    <li><a href="#cta" class="btn btn-outline">Get Started</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                 <i class="fas fa-bars"></i>
+                 <i class="fas fa-times"></i>
+             </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content reveal">
+                    <h1>Empowering <span>Secure & Agile</span> Development Cycles</h1>
+                    <p class="subtitle">World-class DevSecOps solutions designed to seamlessly integrate security, automate workflows, and accelerate your software delivery pipeline without compromising safety.</p>
+                    <a href="#cta" class="btn btn-primary">Request Consultation</a>
+                    <a href="#capabilities" class="btn btn-outline">Explore Capabilities</a>
+                </div>
+            </div>
+             <a href="#capabilities" class="scroll-down" aria-label="Scroll down">
+                 <i class="fas fa-chevron-down"></i>
+             </a>
+        </section>
+
+        <!-- Capabilities Section -->
+        <section id="capabilities" class="reveal">
+            <div class="container">
+                <h2 class="section-title">Our DevSecOps Capabilities</h2>
+                <div class="capabilities-grid">
+                    <!-- Capability 1 -->
+                    <div class="capability-card" style="--order: 1;">
+                        <span class="capability-icon"><i class="fas fa-shield-alt"></i></span>
+                        <h3>CI/CD Security</h3>
+                        <p>Embed automated security checks (SAST, DAST, SCA) directly into your pipelines for early vulnerability detection.</p>
+                    </div>
+                    <!-- Capability 2 -->
+                    <div class="capability-card" style="--order: 2;">
+                        <span class="capability-icon"><i class="fas fa-file-code"></i></span>
+                        <h3>IaC Security & Scanning</h3>
+                        <p>Secure your infrastructure from the start by scanning Terraform, CloudFormation, etc., for misconfigurations.</p>
+                    </div>
+                    <!-- Capability 3 -->
+                    <div class="capability-card" style="--order: 3;">
+                        <span class="capability-icon"><i class="fas fa-box-open"></i></span>
+                        <h3>Container Security</h3>
+                        <p>Implement image scanning, runtime protection, and secure configurations for Docker and Kubernetes environments.</p>
+                    </div>
+                    <!-- Capability 4 -->
+                    <div class="capability-card" style="--order: 4;">
+                        <span class="capability-icon"><i class="fas fa-cloud-check"></i></span>
+                        <h3>Cloud Security Posture</h3>
+                        <p>Continuously monitor and enforce security best practices across your AWS, Azure, or GCP cloud environments.</p>
+                    </div>
+                    <!-- Capability 5 -->
+                    <div class="capability-card" style="--order: 5;">
+                        <span class="capability-icon"><i class="fas fa-vial"></i></span>
+                        <h3>AppSec Testing Automation</h3>
+                        <p>Integrate SAST, DAST, IAST, and RASP tools effectively within the development lifecycle for comprehensive testing.</p>
+                    </div>
+                    <!-- Capability 6 -->
+                    <div class="capability-card" style="--order: 6;">
+                        <span class="capability-icon"><i class="fas fa-balance-scale-right"></i></span>
+                        <h3>Compliance Automation</h3>
+                        <p>Automate compliance checks and evidence gathering for standards like SOC2, ISO27001, PCI-DSS, and HIPAA.</p>
+                    </div>
+                     <!-- Capability 7 -->
+                    <div class="capability-card" style="--order: 7;">
+                        <span class="capability-icon"><i class="fas fa-users-cog"></i></span>
+                        <h3>Security Culture & Training</h3>
+                        <p>Foster a security-first mindset through targeted training, workshops, and security champion programs.</p>
+                    </div>
+                     <!-- Capability 8 -->
+                    <div class="capability-card" style="--order: 8;">
+                        <span class="capability-icon"><i class="fas fa-project-diagram"></i></span>
+                        <h3>Threat Modeling</h3>
+                        <p>Proactively identify and mitigate potential security threats early in the design and development phases.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="process" class="reveal">
+            <div class="container">
+                <h2 class="section-title">Our Engagement Process</h2>
+                <div class="process-steps">
+                    <div class="process-step" style="--order: 1;">
+                        <div class="step-number">1</div>
+                        <h3>Discovery & Assessment</h3>
+                        <p>We analyze your current state, processes, tools, and security posture to identify gaps and opportunities.</p>
+                    </div>
+                    <div class="process-step" style="--order: 2;">
+                        <div class="step-number">2</div>
+                        <h3>Strategy & Roadmap</h3>
+                        <p>Collaboratively define a tailored DevSecOps strategy, toolchain, and phased implementation roadmap.</p>
+                    </div>
+                    <div class="process-step" style="--order: 3;">
+                        <div class="step-number">3</div>
+                        <h3>Implementation & Integration</h3>
+                        <p>We implement security tools, automate processes within your pipelines, and ensure seamless integration.</p>
+                    </div>
+                    <div class="process-step" style="--order: 4;">
+                        <div class="step-number">4</div>
+                        <h3>Optimization & Support</h3>
+                        <p>Continuously monitor, optimize, and provide ongoing support to ensure long-term success and maturity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="why-choose-us" class="reveal">
+            <div class="container">
+                <h2 class="section-title">Why Partner with DSONext?</h2>
+                <div class="why-choose-us-content">
+                    <div class="why-text">
+                        <h3>Accelerate Securely, Innovate Confidently</h3>
+                        <p>We don't just implement tools; we integrate security into your culture and workflows, enabling you to ship faster and safer.</p>
+                        <ul class="benefits-list">
+                            <li><i class="fas fa-check-circle"></i> Reduce security risks and vulnerabilities early.</li>
+                            <li><i class="fas fa-check-circle"></i> Increase development velocity and deployment frequency.</li>
+                            <li><i class="fas fa-check-circle"></i> Improve collaboration between Dev, Sec, and Ops teams.</li>
+                            <li><i class="fas fa-check-circle"></i> Ensure continuous compliance and simplify audits.</li>
+                            <li><i class="fas fa-check-circle"></i> Gain expert guidance and leverage best-in-class practices.</li>
+                        </ul>
+                         <a href="#cta" class="btn btn-primary" style="margin-top: 1rem;">Discuss Your Project</a>
+                    </div>
+                    <div class="why-image">
+                         <!-- Placeholder image, replace with a relevant graphic or photo -->
+                         <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Team collaborating on DevSecOps workflow">
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="reveal">
+            <div class="container">
+                <h2 class="section-title">What Our Clients Say</h2>
+                <div class="testimonial-grid">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card" style="--order: 1;">
+                        <p class="testimonial-text">"DSONext transformed our release process. Security is no longer a bottleneck but an integrated part of our development, allowing us to deploy multiple times a day with confidence."</p>
+                        <div class="testimonial-author">
+                            <div class="author-img">JD</div> <!-- Placeholder -->
+                            <div class="author-info">
+                                <h4>Jane Doe</h4>
+                                <p>CTO, Tech Innovators Inc.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card" style="--order: 2;">
+                        <p class="testimonial-text">"The automated compliance checks DSONext implemented saved us hundreds of hours during our last audit. Their expertise in cloud security is truly world-class."</p>
+                        <div class="testimonial-author">
+                            <div class="author-img">MS</div> <!-- Placeholder -->
+                            <div class="author-info">
+                                <h4>Mark Smith</h4>
+                                <p>Head of Engineering, FinSecure</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                     <div class="testimonial-card" style="--order: 3;">
+                        <p class="testimonial-text">"Partnering with DSONext helped us shift security left effectively. Their training programs significantly improved our developers' security awareness and practices."</p>
+                        <div class="testimonial-author">
+                             <div class="author-img">AK</div> <!-- Placeholder -->
+                             <div class="author-info">
+                                 <h4>Alex Kim</h4>
+                                 <p>VP of Platform Engineering, CloudScale Ltd.</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="cta">
+            <div class="container reveal">
+                <h2>Ready to Elevate Your DevSecOps Maturity?</h2>
+                <p>Let's discuss how DSONext can help you integrate security seamlessly, accelerate development, and achieve your business goals. Schedule a free, no-obligation consultation today.</p>
+                <a href="mailto:contact@dsonext.com?subject=DevSecOps Consultation Request" class="btn">Request a Free Consultation</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© <span id="current-year"></span> DSONext. All Rights Reserved.</p>
+             <div class="footer-links">
+                 <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+             </div>
+            <!-- Add social media links if desired -->
+        </div>
+    </footer>
+
+    <script src="all.js"></script>
+</body>
+</html>
